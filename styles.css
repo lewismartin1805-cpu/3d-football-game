@@ -1,0 +1,307 @@
+:root {
+  --bg-dark: #071b1d;
+  --bg-mid: #0c2d2c;
+  --panel: rgba(10, 30, 35, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.16);
+  --button-blue: #3ca5ff;
+  --button-blue-strong: #1d7ee8;
+  --home: #3dd9c4;
+  --away: #ff6b7d;
+  --gold: #ffd166;
+  --text: #ecf7ff;
+  --muted: rgba(236, 247, 255, 0.8);
+  --shadow: rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top, #113b42 0%, var(--bg-dark) 45%, #020b15 100%);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+}
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(3, 9, 14, 0.42);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.menu-panel {
+  width: min(520px, 84vw);
+  background: linear-gradient(180deg, rgba(11, 18, 24, 0.78), rgba(8, 24, 28, 0.88));
+  border: 1px solid var(--panel-border);
+  border-radius: 28px;
+  padding: 2.1rem 2rem 1.6rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.48rem 0.82rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+  letter-spacing: 0.22rem;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.3rem, 4vw, 4.1rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.menu-panel p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 1rem auto 1.5rem;
+  max-width: 38ch;
+}
+
+.menu-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+button {
+  appearance: none;
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, var(--button-blue), var(--button-blue-strong));
+  color: white;
+  box-shadow: 0 18px 32px rgba(34, 124, 216, 0.38);
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tips {
+  list-style: none;
+  padding: 0;
+  margin: 1.4rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 0.55rem;
+  color: rgba(236, 247, 255, 0.8);
+}
+
+.tips li {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.scoreboard {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  min-width: min(660px, 76vw);
+  background: rgba(11, 19, 25, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+}
+
+.team {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.team .name {
+  font-size: 0.9rem;
+  opacity: 0.94;
+}
+
+.team.home .name {
+  color: var(--home);
+}
+
+.team.away .name {
+  color: var(--away);
+}
+
+.score {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 120px;
+}
+
+#timer {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.match-status {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.controls {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(105px, 1fr));
+  gap: 0.8rem;
+  width: min(660px, 76vw);
+  pointer-events: auto;
+}
+
+.action-btn {
+  background: linear-gradient(180deg, rgba(25, 35, 44, 0.88), rgba(12, 18, 22, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 12px 24px rgba(6, 9, 12, 0.26);
+}
+
+.action-btn[data-action='pass'] {
+  background: linear-gradient(180deg, rgba(54, 183, 255, 0.9), rgba(12, 76, 128, 0.96));
+}
+
+.action-btn[data-action='shoot'] {
+  background: linear-gradient(180deg, rgba(255, 209, 102, 0.95), rgba(180, 122, 0, 0.96));
+  color: #1a1a1a;
+}
+
+.action-btn[data-action='cross'] {
+  background: linear-gradient(180deg, rgba(61, 217, 196, 0.9), rgba(11, 109, 85, 0.96));
+}
+
+.action-btn[data-action='tackle'] {
+  background: linear-gradient(180deg, rgba(255, 107, 125, 0.92), rgba(168, 35, 51, 0.96));
+}
+
+.message {
+  position: absolute;
+  left: 50%;
+  top: 120px;
+  transform: translateX(-50%);
+  z-index: 9;
+  background: rgba(7, 16, 18, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .scoreboard {
+    min-width: unset;
+    width: calc(100vw - 24px);
+    padding: 0.8rem 0.9rem;
+  }
+
+  .team .name {
+    font-size: 0.72rem;
+  }
+
+  .controls {
+    width: calc(100vw - 18px);
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    bottom: 16px;
+  }
+
+  .tips {
+    grid-template-columns: 1fr;
+  }
+}
